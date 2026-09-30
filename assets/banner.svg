@@ -39,8 +39,8 @@
   </g>
 
   <!-- title + subtitle (kept clear of the card on the right) -->
-  <text x="300" y="128" class="t" font-weight="800" font-size="44" fill="#f8fafc">Google Maps Scraper Kit</text>
-  <text x="302" y="170" class="t" font-weight="400" font-size="21" fill="#94a3b8">Run a free Google&#160;Maps scraper locally, driven by Claude.</text>
+  <text x="300" y="128" class="t" font-weight="800" font-size="44" fill="#f8fafc">MapsLead Studio Pro</text>
+  <text x="302" y="170" class="t" font-weight="400" font-size="21" fill="#94a3b8">High-performance local Google&#160;Maps lead intelligence studio.</text>
 
   <!-- chips -->
   <g transform="translate(300,200)">
@@ -52,7 +52,7 @@
     <g transform="translate(186,0)">
       <rect x="0" y="0" rx="22" ry="22" width="158" height="42" fill="#0f213b" stroke="#1f3a5f"/>
       <circle cx="24" cy="21" r="6" fill="#a78bfa"/>
-      <text x="40" y="28" class="t" font-weight="600" font-size="19" fill="#cbd5e1">Claude skill</text>
+      <text x="40" y="28" class="t" font-weight="600" font-size="19" fill="#cbd5e1">Interactive UI</text>
     </g>
     <g transform="translate(360,0)">
       <rect x="0" y="0" rx="22" ry="22" width="158" height="42" fill="#0f213b" stroke="#1f3a5f"/>

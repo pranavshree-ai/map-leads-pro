@@ -181,7 +181,6 @@ google-maps-scraper-kit/
 │   ├── queries.example.json   ← reference configuration & coordinate cheatsheet
 │   └── queries.example.txt    ← batch keyword list
 ├── SETUP.md                   ← detailed step-by-step setup guide
-├── CLAUDE.md                  ← AI pair programming instructions
 ├── CREDITS.md                 ← open-source notices
 └── LICENSE                    ← MIT License
 ```
