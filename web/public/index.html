@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MapsLead Studio Pro | Local Lead Generation & Business Intelligence</title>
+  <meta name="description" content="High-performance local lead intelligence platform for scraping and qualifying Google Maps business listings.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark-theme">
+  <!-- App Container -->
+  <div class="app-layout">
+    
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+      <div class="nav-brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+            <line x1="8" y1="2" x2="8" y2="18"></line>
+            <line x1="16" y1="6" x2="16" y2="22"></line>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>MapsLead <span class="brand-pro">Studio Pro</span></h1>
+          <span class="brand-subtitle">Local Lead Intelligence Suite</span>
+        </div>
+      </div>
+
+      <div class="nav-center-stats">
+        <div class="stat-pill" id="stat-engine-pill">
+          <span class="status-beacon beacon-online" id="engine-beacon"></span>
+          <span class="stat-label">Engine:</span>
+          <span class="stat-value" id="engine-status-text">Checking...</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-icon">📊</span>
+          <span class="stat-label">Jobs:</span>
+          <span class="stat-value" id="total-jobs-count">0</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-icon">⚡</span>
+          <span class="stat-label">Active:</span>
+          <span class="stat-value" id="active-jobs-count">0</span>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <button id="btn-refresh-jobs" class="btn btn-secondary btn-icon-only" title="Refresh Dashboard">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+        </button>
+        <button id="btn-theme-toggle" class="btn btn-secondary btn-icon-only" title="Toggle Theme">
+          <svg class="icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="main-workspace">
+      
+      <!-- Left Panel: Control Dock & Scrape Form -->
+      <section class="panel control-panel" aria-label="Scrape Configuration">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span class="title-accent"></span>
+            <h2>Launch Lead Mission</h2>
+          </div>
+          <span class="badge badge-accent">Interactive Builder</span>
+        </div>
+
+        <form id="scrape-form" class="studio-form">
+          
+          <!-- Step 1: Location & Smart Geocoding -->
+          <div class="form-section">
+            <div class="section-label-row">
+              <label for="location-input" class="form-label">
+                <span class="step-num">1</span> Target City / Location
+              </label>
+              <span class="badge badge-subtle" id="geo-status-badge">Auto-Geocoding</span>
+            </div>
+            
+            <div class="input-with-action">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <input 
+                type="text" 
+                id="location-input" 
+                class="form-input" 
+                placeholder="e.g. Austin, TX or Denver, CO" 
+                value="Austin, TX"
+                autocomplete="off"
+                required
+              >
+              <button type="button" id="btn-manual-coords" class="btn-input-action" title="Edit Lat/Lon Manually">
+                Coordinates
+              </button>
+            </div>
+
+            <!-- Quick City Chips -->
+            <div class="preset-chips">
+              <button type="button" class="chip-btn" data-city="Austin, TX" data-lat="30.2672" data-lon="-97.7431">Austin, TX</button>
+              <button type="button" class="chip-btn" data-city="Miami, FL" data-lat="25.7617" data-lon="-80.1918">Miami, FL</button>
+              <button type="button" class="chip-btn" data-city="Denver, CO" data-lat="39.7392" data-lon="-104.9903">Denver, CO</button>
+              <button type="button" class="chip-btn" data-city="New York, NY" data-lat="40.7128" data-lon="-74.0060">New York</button>
+              <button type="button" class="chip-btn" data-city="London, UK" data-lat="51.5074" data-lon="-0.1278">London</button>
+            </div>
+
+            <!-- Manual Coordinates Drawer (Hidden by default) -->
+            <div id="coords-drawer" class="drawer-panel hidden">
+              <div class="coords-grid">
+                <div class="form-group">
+                  <label for="lat-input" class="form-sublabel">Latitude</label>
+                  <input type="text" id="lat-input" class="form-input-sm" value="30.2672" required>
+                </div>
+                <div class="form-group">
+                  <label for="lon-input" class="form-sublabel">Longitude</label>
+                  <input type="text" id="lon-input" class="form-input-sm" value="-97.7431" required>
+                </div>
+              </div>
+              <p class="helper-text" id="resolved-geo-text">Resolved: Austin, Travis County, Texas, United States</p>
+            </div>
+          </div>
+
+          <!-- Step 2: Niche / Keywords -->
+          <div class="form-section">
+            <div class="section-label-row">
+              <label for="keywords-input" class="form-label">
+                <span class="step-num">2</span> Business Niches / Keywords
+              </label>
+              <span class="counter-badge" id="keyword-count-badge">1 keyword</span>
+            </div>
+            
+            <textarea 
+              id="keywords-input" 
+              class="form-textarea" 
+              rows="3" 
+              placeholder="e.g. coffee shops&#10;artisan bakeries&#10;specialty roasters"
+              required
+            >coffee shops</textarea>
+
+            <!-- Keyword Presets -->
+            <div class="preset-chips">
+              <button type="button" class="chip-btn kw-preset" data-kw="coffee shops">☕ Coffee Shops</button>
+              <button type="button" class="chip-btn kw-preset" data-kw="dentists">🦷 Dentists</button>
+              <button type="button" class="chip-btn kw-preset" data-kw="gyms & fitness">🏋️ Gyms</button>
+              <button type="button" class="chip-btn kw-preset" data-kw="roofing contractors">🏠 Roofers</button>
+              <button type="button" class="chip-btn kw-preset" data-kw="real estate agencies">🏢 Real Estate</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Depth & Scope Controls -->
+          <div class="form-section">
+            <div class="section-label-row">
+              <label for="depth-slider" class="form-label">
+                <span class="step-num">3</span> Depth & Reach
+              </label>
+              <span class="metric-highlight" id="depth-display">Depth: 5 (~25-50 leads)</span>
+            </div>
+            
+            <input type="range" id="depth-slider" class="range-slider" min="1" max="30" value="5" step="1">
+            
+            <div class="slider-ticks">
+              <span>Quick (1)</span>
+              <span>Balanced (5)</span>
+              <span>Deep (15)</span>
+              <span>Maximum (30)</span>
+            </div>
+          </div>
+
+          <!-- Step 4: Lead Enrichment Switches -->
+          <div class="form-section">
+            <label class="form-label"><span class="step-num">4</span> Lead Enrichment Toggles</label>
+            
+            <div class="toggle-card">
+              <div class="toggle-info">
+                <span class="toggle-title">
+                  ⚡ Extract Emails
+                  <span class="badge badge-success">High Value</span>
+                </span>
+                <span class="toggle-desc">Scans business websites to uncover verified decision-maker emails.</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="email-toggle" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="toggle-card">
+              <div class="toggle-info">
+                <span class="toggle-title">🌐 Social Profiles Detection</span>
+                <span class="toggle-desc">Identifies Instagram, LinkedIn & Facebook handles from company websites.</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="socials-toggle">
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="toggle-card">
+              <div class="toggle-info">
+                <span class="toggle-title">🚀 Fast Mode</span>
+                <span class="toggle-desc">Accelerated lightweight collection with minimal browser overhead.</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="fastmode-toggle">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Advanced Accordion: Radius, Timeout & Proxies -->
+          <details class="accordion-section" id="advanced-settings">
+            <summary class="accordion-summary">
+              <span>⚙️ Advanced Settings & Proxies</span>
+              <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            
+            <div class="accordion-content">
+              <div class="grid-2col">
+                <div class="form-group">
+                  <label for="radius-input" class="form-sublabel">Search Radius (meters)</label>
+                  <input type="number" id="radius-input" class="form-input-sm" value="10000" step="1000">
+                </div>
+                <div class="form-group">
+                  <label for="zoom-input" class="form-sublabel">Map Zoom Level (1-21)</label>
+                  <input type="number" id="zoom-input" class="form-input-sm" value="15" min="1" max="21">
+                </div>
+              </div>
+
+              <div class="form-group mt-sm">
+                <label for="maxtime-select" class="form-sublabel">Max Wall-Clock Time</label>
+                <select id="maxtime-select" class="form-select">
+                  <option value="300" selected>5 Minutes (Standard)</option>
+                  <option value="600">10 Minutes (Recommended for Deep runs)</option>
+                  <option value="1200">20 Minutes (Heavy batch)</option>
+                  <option value="1800">30 Minutes (Maximum)</option>
+                </select>
+              </div>
+
+              <div class="form-group mt-sm">
+                <label for="proxies-input" class="form-sublabel">
+                  Proxies (Optional - one per line)
+                </label>
+                <textarea 
+                  id="proxies-input" 
+                  class="form-textarea-sm" 
+                  rows="2" 
+                  placeholder="http://user:pass@proxy.example.com:8080&#10;socks5://127.0.0.1:9050"
+                ></textarea>
+              </div>
+            </div>
+          </details>
+
+          <!-- Launch CTA -->
+          <div class="form-actions">
+            <button type="submit" id="btn-start-scrape" class="btn btn-hero">
+              <span class="btn-shimmer"></span>
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <span>Launch Scrape Mission</span>
+            </button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- Right Panel: Mission Control, Active Scrapes & Jobs History -->
+      <section class="panel history-panel" aria-label="Scraping Operations">
+        
+        <!-- Live Active Progress Card (Appears during scraping) -->
+        <div id="live-mission-card" class="mission-card active-card hidden">
+          <div class="mission-card-header">
+            <div class="mission-live-status">
+              <span class="pulse-ring"></span>
+              <span class="pulse-dot"></span>
+              <span class="mission-status-title">Mission in Progress</span>
+            </div>
+            <span class="mission-timer" id="mission-elapsed-timer">00:00</span>
+          </div>
+
+          <div class="mission-card-body">
+            <h3 class="mission-query-title" id="active-query-title">Scraping Austin, TX...</h3>
+            <p class="mission-subtext" id="active-query-sub">Querying Google Maps & resolving listings</p>
+            
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill animated-shimmer" id="mission-progress-bar"></div>
+            </div>
+            <div class="progress-stats-row">
+              <span id="active-status-badge" class="badge badge-warning">Working</span>
+              <span class="progress-text" id="active-status-detail">Extracting details & contacts</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- History Header -->
+        <div class="panel-header">
+          <div class="panel-title">
+            <span class="title-accent"></span>
+            <h2>Operations Pipeline</h2>
+          </div>
+          <div class="filter-group">
+            <input type="text" id="history-search" class="search-input-sm" placeholder="Filter jobs...">
+          </div>
+        </div>
+
+        <!-- Jobs Table Container -->
+        <div class="table-container">
+          <table class="data-table" id="jobs-table">
+            <thead>
+              <tr>
+                <th>Job Mission</th>
+                <th>Target & Keywords</th>
+                <th>Created</th>
+                <th>Status</th>
+                <th class="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="jobs-table-body">
+              <tr class="empty-row">
+                <td colspan="5">
+                  <div class="empty-state">
+                    <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M16 16s-1.5-2-4-2-4 2-4 2"></path>
+                      <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                      <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                    </svg>
+                    <p>No scrape jobs recorded yet. Launch your first mission on the left!</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Interactive Lead Explorer Modal / Drawer -->
+    <div id="lead-explorer-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+      <div class="modal-window">
+        
+        <!-- Modal Top Bar -->
+        <div class="modal-header">
+          <div class="modal-title-group">
+            <div class="modal-tag">Lead Intelligence Explorer</div>
+            <h2 id="modal-job-title" class="modal-title">Coffee Shops in Austin, TX</h2>
+            <div class="modal-meta" id="modal-job-meta">Job ID: 28ca7a6f • 48 Business Leads</div>
+          </div>
+          <div class="modal-actions">
+            <!-- Export Options -->
+            <button id="btn-export-csv" class="btn btn-primary btn-sm">
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Export CSV
+            </button>
+            <button id="btn-export-json" class="btn btn-secondary btn-sm">
+              Export JSON
+            </button>
+            <button id="btn-copy-clipboard" class="btn btn-secondary btn-sm" title="Copy Table to Clipboard">
+              Copy
+            </button>
+            <button id="btn-close-modal" class="btn-close-round" title="Close Explorer">&times;</button>
+          </div>
+        </div>
+
+        <!-- Metrics Ribbons -->
+        <div class="modal-metrics-bar">
+          <div class="metric-card">
+            <span class="metric-title">Total Places</span>
+            <span class="metric-num" id="modal-stat-total">0</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-title">Verified Emails</span>
+            <span class="metric-num highlight-cyan" id="modal-stat-emails">0</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-title">Direct Phones</span>
+            <span class="metric-num highlight-emerald" id="modal-stat-phones">0</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-title">Websites Found</span>
+            <span class="metric-num" id="modal-stat-websites">0</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-title">Avg Review Rating</span>
+            <span class="metric-num highlight-amber" id="modal-stat-rating">4.8 ★</span>
+          </div>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="modal-filters-bar">
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="lead-filter-search" class="filter-input" placeholder="Search business name, category, or address...">
+          </div>
+
+          <div class="quick-filter-chips">
+            <button class="filter-chip active" data-filter="all">All Leads</button>
+            <button class="filter-chip" data-filter="has-email">✉️ With Email</button>
+            <button class="filter-chip" data-filter="has-phone">📞 With Phone</button>
+            <button class="filter-chip" data-filter="has-website">🌐 With Website</button>
+            <button class="filter-chip" data-filter="top-rated">★ 4.5+ Rating</button>
+          </div>
+
+          <div class="view-mode-toggle">
+            <button id="view-mode-table" class="view-btn active" title="Table View">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            </button>
+            <button id="view-mode-cards" class="view-btn" title="Cards View">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Leads Content View Area -->
+        <div class="modal-body-scrollable">
+          
+          <!-- Table View Container -->
+          <div id="leads-table-container" class="table-container">
+            <table class="data-table lead-data-table">
+              <thead>
+                <tr>
+                  <th class="sortable" data-sort="title">Company & Category ⬍</th>
+                  <th class="sortable" data-sort="rating">Rating & Reviews ⬍</th>
+                  <th>Direct Phone</th>
+                  <th>Emails</th>
+                  <th>Website</th>
+                  <th>Address</th>
+                  <th class="text-right">Quick Actions</th>
+                </tr>
+              </thead>
+              <tbody id="leads-table-body">
+                <!-- Dynamically populated rows -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Cards View Container (Hidden initially) -->
+          <div id="leads-cards-container" class="cards-grid hidden">
+            <!-- Dynamically populated cards -->
+          </div>
+
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <span class="showing-count" id="modal-showing-count">Showing 0 of 0 leads</span>
+          <button class="btn btn-secondary btn-sm" id="btn-close-modal-bottom">Close Window</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Toast Notification System -->
+    <div id="toast-container" class="toast-shelf" aria-live="polite"></div>
+
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

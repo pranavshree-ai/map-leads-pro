@@ -1,0 +1,46 @@
+# MapsLead Studio Pro - Docker Compose Configuration
+# Microservices: Scraper Engine + Interactive Modern Web UI Studio
+# Web UI is exposed at http://localhost:8080 (bound to 127.0.0.1 for local security)
+
+services:
+  scraper-engine:
+    image: gosom/google-maps-scraper:v1.15.0
+    container_name: gmaps-scraper
+    restart: unless-stopped
+    command: ["-web", "-data-folder", "/gmapsdata"]
+    expose:
+      - "8080"
+    ports:
+      - "127.0.0.1:8081:8080"    # direct engine access (optional)
+    volumes:
+      - gmaps_data:/gmapsdata    # job results persist here
+      - gmaps_cache:/opt         # Playwright browser cache (faster restarts)
+    environment:
+      - PLAYWRIGHT_DRIVER_PATH=/opt/ms-playwright-go/1.57.0
+    networks:
+      - mapslead_net
+
+  scraper-ui:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: mapslead-ui
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"    # Modern UI and API Gateway
+    environment:
+      - PORT=8080
+      - ENGINE_HOST=scraper-engine
+      - ENGINE_PORT=8080
+    depends_on:
+      - scraper-engine
+    networks:
+      - mapslead_net
+
+volumes:
+  gmaps_data:
+  gmaps_cache:
+
+networks:
+  mapslead_net:
+    driver: bridge
